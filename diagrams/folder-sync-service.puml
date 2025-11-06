@@ -1,0 +1,64 @@
+@startuml
+title FolderSyncService - class diagram
+
+' External base class
+class BackgroundService <<abstract>> {
+  +ExecuteAsync(CancellationToken) : Task
+  +StopAsync(CancellationToken) : Task
+}
+
+' Main service
+class FolderSyncService {
+  - ILogger<FolderSyncService> _logger
+  - SyncConfiguration _config
+  - SyncEngine _syncEngine
+  + ExecuteAsync(stoppingToken: CancellationToken) : Task
+  - PerformSynchronization(cancellationToken: CancellationToken) : Task
+  + StopAsync(cancellationToken: CancellationToken) : Task
+}
+
+FolderSyncService --|> BackgroundService
+
+' Dependencies / collaborators
+class SyncConfiguration {
+  +string SourcePath
+  +string ReplicaPath
+  +int IntervalSeconds
+}
+
+class SyncEngine {
+  +Task<SyncResult> SynchronizeAsync(sourcePath: string, replicaPath: string, ct: CancellationToken)
+}
+
+class SyncResult {
+  +int FilesCopied
+  +int FilesUpdated
+  +int FilesDeleted
+  +long BytesTransferred
+  +int Errors
+}
+
+interface ILogger<T>
+
+FolderSyncService --> "1" ILogger : logs to
+FolderSyncService --> "1" SyncConfiguration : reads
+FolderSyncService --> "1" SyncEngine : calls
+SyncEngine --> SyncResult : returns
+
+' Implementation/runtime helpers
+class PeriodicTimer {
+  +PeriodicTimer(interval: TimeSpan)
+  +WaitForNextTickAsync(ct: CancellationToken) : Task<bool>
+}
+
+FolderSyncService ..> PeriodicTimer : uses
+
+' Notes about behavior
+note right of FolderSyncService
+- Starts with an immediate PerformSynchronization()
+- Then creates PeriodicTimer using _config.IntervalSeconds
+- Loops: WaitForNextTickAsync -> PerformSynchronization
+- Logs statistics (FilesCopied, FilesUpdated, FilesDeleted, BytesTransferred, Errors)
+end note
+
+@enduml

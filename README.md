@@ -79,6 +79,13 @@ dotnet run -- "C:\Source" "C:\Replica" 300 "C:\Logs\sync.log"
 - `FolderSyncService.cs` — runs the periodic job
 - `SyncEngine.cs` — does the actual copying and deleting
 
+## Diagram
+
+Here is a diagram showing the `FolderSyncService` and its main collaborators:
+
+![FolderSyncService diagram](diagrams/FolderSyncService.png)
+
+
 ## Notes for users
 
 - Make sure the source folder exists. The replica will be created if missing.
