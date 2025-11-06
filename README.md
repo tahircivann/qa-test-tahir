@@ -2,6 +2,12 @@
 
 A production-ready, high-performance folder synchronization tool written in C# for .NET 6+. This implementation follows modern best practices and leverages the latest .NET performance improvements.
 
+## Diagram
+
+Here is a diagram showing the `FolderSyncService` and its main collaborators:
+
+![FolderSyncService diagram](diagrams/FolderSyncService.png)
+
 ## Features
 
 - ✅ **One-way synchronization** from source to replica folder
@@ -79,11 +85,6 @@ dotnet run -- "C:\Source" "C:\Replica" 300 "C:\Logs\sync.log"
 - `FolderSyncService.cs` — runs the periodic job
 - `SyncEngine.cs` — does the actual copying and deleting
 
-## Diagram
-
-Here is a diagram showing the `FolderSyncService` and its main collaborators:
-
-![FolderSyncService diagram](diagrams/FolderSyncService.png)
 
 
 ## Notes for users
