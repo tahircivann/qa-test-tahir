@@ -23,16 +23,16 @@ public class FolderSyncService : BackgroundService
     {
         _logger.LogInformation("FolderSyncService started");
 
-        // Perform initial synchronization immediately
-        await PerformSynchronization(stoppingToken);
+        
+        await PerformSynchronization(stoppingToken); // Perform initial synchronization immediately
 
         // Create periodic timer for subsequent synchronizations
         using var timer = new PeriodicTimer(TimeSpan.FromSeconds(_config.IntervalSeconds));
 
         try
         {
-            // Wait for next tick and perform synchronization
-            while (await timer.WaitForNextTickAsync(stoppingToken))
+           
+            while (await timer.WaitForNextTickAsync(stoppingToken)) // Wait for next tick and perform synchronization
             {
                 await PerformSynchronization(stoppingToken);
             }
@@ -77,7 +77,6 @@ public class FolderSyncService : BackgroundService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during synchronization cycle");
-            // Don't rethrow - allow the service to continue and retry on next interval
         }
     }
 

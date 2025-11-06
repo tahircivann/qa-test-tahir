@@ -20,8 +20,8 @@ class Program
         string replicaPath = args[1];
         string logFilePath = args[3];
 
-        // Validate synchronization interval
-        if (!int.TryParse(args[2], out int intervalSeconds) || intervalSeconds <= 0)
+        
+        if (!int.TryParse(args[2], out int intervalSeconds) || intervalSeconds <= 0)// Validate synchronization interval
         {
             Console.WriteLine("Error: Synchronization interval must be a positive integer (seconds).");
             Console.WriteLine();
@@ -140,7 +140,6 @@ class Program
                 Directory.CreateDirectory(replicaPath);
             }
 
-            // Validate log file path
             string? logDirectory = Path.GetDirectoryName(logFilePath);
             if (!string.IsNullOrEmpty(logDirectory) && !Directory.Exists(logDirectory))
             {
@@ -158,7 +157,6 @@ class Program
     }
 }
 
-// Configuration class
 public class SyncConfiguration
 {
     public string SourcePath { get; init; } = string.Empty;
