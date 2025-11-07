@@ -76,7 +76,7 @@ dotnet run -- <source> <replica> <interval_seconds> <log_file>
 Example:
 
 ```powershell
-dotnet run -- "C:\Source" "C:\Replica" 300 "C:\Logs\sync.log"
+dotnet run  -- "./TestSource" "./TestReplica" 30 "./Logs/sync.log"
 ```
 
 ## Files of interest

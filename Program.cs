@@ -16,9 +16,12 @@ class Program
             return 1;
         }
 
-        string sourcePath = args[0];
-        string replicaPath = args[1];
-        string logFilePath = args[3];
+    string sourcePath = args[0];
+    string replicaPath = args[1];
+    string logFilePath = args[3];
+
+    
+    string fullLogFilePath = Path.GetFullPath(logFilePath); // Normalize log file path to absolute to avoid working-directory issues
 
         
         if (!int.TryParse(args[2], out int intervalSeconds) || intervalSeconds <= 0)// Validate synchronization interval
@@ -44,9 +47,9 @@ class Program
             .WriteTo.Console(
                 outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
             .WriteTo.File(
-                logFilePath,
+                fullLogFilePath,
                 outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {Level:u3}] {Message:lj}{NewLine}{Exception}",
-                shared: false,
+                shared: true,
                 flushToDiskInterval: TimeSpan.FromSeconds(1))
             .CreateLogger();
 
